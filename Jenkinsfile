@@ -12,16 +12,21 @@ stages {
 
     stage('Build Docker Image') {
         steps {
-            sh 'docker build -t car-website:v1 .'
+            bat 'docker build -t car-website:v1 .'
         }
     }
 
     stage('Deploy with Ansible') {
         steps {
-            sh 'ansible-playbook deploy.yml'
+            bat 'ansible-playbook deploy.yml'
         }
     }
 
+    stage('Verify Deployment') {
+        steps {
+            bat 'docker ps'
+        }
+    }
 }
 
 post {
