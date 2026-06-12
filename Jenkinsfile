@@ -1,43 +1,42 @@
 pipeline {
 agent any
 
-```
 stages {
 
     stage('Git Checkout') {
         steps {
-            git 'https://github.com/a250062-devops/carrepo.git'
+            git branch: 'main',
+                url: 'https://github.com/a250062-devops/carrepo.git'
         }
     }
 
     stage('Build Docker Image') {
         steps {
-            bat 'docker build -t car-website:v1 .'
+            sh 'docker build -t car-website:v1 .'
         }
     }
 
-    stage('Deploy with Ansible') {
+    stage('Deploy Using Ansible') {
         steps {
-            bat 'ansible-playbook deploy.yml'
+            sh 'ansible-playbook deploy.yml'
         }
     }
 
     stage('Verify Deployment') {
         steps {
-            bat 'docker ps'
+            sh 'docker ps'
         }
     }
 }
 
 post {
     success {
-        echo 'Website deployed successfully!'
+        echo 'Car Website deployed successfully!'
     }
 
     failure {
         echo 'Deployment failed!'
     }
 }
-```
 
 }
