@@ -1,0 +1,14 @@
+---
+- hosts: localhost
+  connection: local
+
+  tasks:
+    - name: Remove existing container
+      shell: docker rm -f car-site || true
+    - name: Run website container
+      shell: docker run -d --name car-site -p 8080:80 car-website:v1
+    - name: Verify container is running
+      shell: docker ps
+      register: docker_output
+    - debug:
+        var: docker_output.stdout_lines
